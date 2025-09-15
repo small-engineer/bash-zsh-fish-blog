@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 225 46% 6%;
+    --foreground: 210 40% 96%;
+
+    --muted: 222 28% 12%;
+    --muted-foreground: 219 18% 70%;
+
+    --popover: 225 46% 8%;
+    --popover-foreground: 210 40% 96%;
+
+    --border: 222 25% 18%;
+    --input: 222 25% 18%;
+
+    --card: 225 44% 8%;
+    --card-foreground: 210 40% 96%;
+
+    --primary: 158 74% 46%;
+    --primary-foreground: 168 96% 10%;
+
+    --secondary: 221 32% 16%;
+    --secondary-foreground: 210 40% 94%;
+
+    --accent: 192 84% 44%;
+    --accent-foreground: 194 87% 12%;
+
+    --destructive: 356 68% 56%;
+    --destructive-foreground: 0 0% 96%;
+
+    --info: 193 85% 18%;
+    --info-foreground: 188 80% 88%;
+
+    --success: 141 76% 21%;
+    --success-foreground: 143 63% 88%;
+
+    --warning: 32 90% 32%;
+    --warning-foreground: 35 94% 90%;
+
+    --error: 3 70% 42%;
+    --error-foreground: 0 0% 96%;
+
+    --ring: 190 90% 46%;
+
+    --radius: 0.6rem;
+  }
+
+  ::selection {
+    background: rgba(94, 234, 212, 0.35);
+    color: #f8fafc;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "liga" 1, "calt" 1, "rlig" 1;
+    background-image:
+      linear-gradient(135deg, rgba(22, 78, 99, 0.25) 0%, rgba(12, 18, 30, 0.8) 45%, rgba(12, 38, 50, 0.75) 100%),
+      radial-gradient(circle at 1px 1px, rgba(148, 163, 184, 0.22) 1px, transparent 0);
+    background-size: cover, 48px 48px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    letter-spacing: 0.01em;
+  }
+
+  a {
+    @apply text-primary transition-colors;
+  }
+
+  a:hover {
+    @apply text-primary/90;
+  }
+}
+
+@layer utilities {
+  .glow-ring {
+    box-shadow: 0 0 0 1px rgba(94, 234, 212, 0.25), 0 0 35px rgba(34, 211, 238, 0.14);
+  }
+
+  .grid-overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 0),
+      linear-gradient(90deg, rgba(148, 163, 184, 0.12) 1px, transparent 0);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.45), transparent 70%);
+    pointer-events: none;
+  }
+}
