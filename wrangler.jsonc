@@ -1,7 +1,6 @@
 {
-  "name": "shell-frontier",
+  "name": "bash-zsh-fish",
   "compatibility_date": "2025-09-15",
-  "assets": {
-    "directory": "./dist"
-  }
+  "assets": { "directory": "./dist", "binding": "ASSETS" },
+  "routes": [{ "pattern": "bash.zsh.fish/*" }, { "pattern": "zsh.fish/*" }]
 }
