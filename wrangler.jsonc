@@ -1,6 +1,9 @@
 {
   "name": "bash-zsh-fish",
-  "compatibility_date": "2025-09-15",
-  "assets": { "directory": "./dist", "binding": "ASSETS" },
-  "routes": [{ "pattern": "bash.zsh.fish/*" }, { "pattern": "zsh.fish/*" }]
+  "compatibility_date": "2024-12-01",
+  "assets": { "directory": "./dist" },
+  "routes": [
+    { "pattern": "bash.zsh.fish/*", "zone_name": "zsh.fish" },
+    { "pattern": "zsh.fish/*", "zone_name": "zsh.fish" }
+  ]
 }
