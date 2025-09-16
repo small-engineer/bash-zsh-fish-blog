@@ -1,35 +1,39 @@
-import Fab from "@suid/material/Fab"
-import Fade from "@suid/material/Fade"
-import KeyboardArrowUpIcon from "@suid/icons-material/KeyboardArrowUp"
-import { useWindowScrollPosition } from "@solid-primitives/scroll"
-import { createMemo } from "solid-js"
-import type { Component } from "solid-js"
+import { createSignal, onCleanup, onMount, Show } from 'solid-js'
+import type { Component } from 'solid-js'
+
+import { Button } from '~/components/ui/button'
 
 const ScrollToTopButton: Component = () => {
-  const scroll = useWindowScrollPosition()
-  const isVisible = createMemo(() => scroll.y > 420)
+  const [visible, setVisible] = createSignal(false)
 
-  const handleClick = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" })
+  const handleScroll = () => {
+    setVisible(window.scrollY > 360)
+  }
+
+  onMount(() => {
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+  })
+
+  onCleanup(() => {
+    window.removeEventListener('scroll', handleScroll)
+  })
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
-    <Fade in={isVisible()}>
-      <Fab
-        color="secondary"
-        onClick={handleClick}
-        sx={{
-          position: "fixed",
-          bottom: 32,
-          right: 32,
-          boxShadow: "0 20px 40px rgba(14, 165, 233, 0.4)",
-          zIndex: 1300,
-        }}
-        aria-label="scroll back to top"
+    <Show when={visible()}>
+      <Button
+        size="icon"
+        class="fixed bottom-6 right-6 z-50 rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/25"
+        onClick={scrollToTop}
+        aria-label="ページの先頭に戻る"
       >
-        <KeyboardArrowUpIcon />
-      </Fab>
-    </Fade>
+        ▲
+      </Button>
+    </Show>
   )
 }
 
