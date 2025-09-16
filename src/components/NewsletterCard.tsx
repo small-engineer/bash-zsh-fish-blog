@@ -1,73 +1,50 @@
-import Button from "@suid/material/Button"
-import Paper from "@suid/material/Paper"
-import Stack from "@suid/material/Stack"
-import TextField from "@suid/material/TextField"
-import InputAdornment from "@suid/material/InputAdornment"
-import Typography from "@suid/material/Typography"
-import RssFeedIcon from "@suid/icons-material/RssFeed"
-import MailOutlineIcon from "@suid/icons-material/MailOutline"
-import type { Component } from "solid-js"
+import { createSignal } from 'solid-js'
+import type { Component, JSX } from 'solid-js'
+
+import { Button } from '~/components/ui/button'
 
 const NewsletterCard: Component = () => {
+  const [email, setEmail] = createSignal('')
+
+  const handleSubmit: JSX.EventHandler<HTMLFormElement, SubmitEvent> = (event) => {
+    event.preventDefault()
+    event.currentTarget.reset()
+    setEmail('')
+  }
+
   return (
-    <Paper
+    <section
       id="newsletter"
-      variant="outlined"
-      sx={{
-        background: "linear-gradient(135deg, rgba(15, 118, 110, 0.35) 0%, rgba(14, 165, 233, 0.4) 100%)",
-        border: "1px solid rgba(94, 234, 212, 0.45)",
-        backdropFilter: "blur(24px)",
-        overflow: "hidden",
-      }}
+      class="rounded-[2rem] border border-border/60 bg-gradient-to-r from-primary/12 via-white to-accent/12 px-6 py-10 shadow-gentle md:px-12"
     >
-      <Stack spacing={3} sx={{ p: { xs: 3, md: 4 } }}>
-        <Stack direction="row" spacing={1.5} alignItems="center">
-          <RssFeedIcon sx={{ fontSize: 32, color: "rgba(204, 251, 241, 0.95)" }} />
-          <Typography variant="h4" sx={{ fontWeight: 700 }}>
-            Minimal bits. Maximal signals.
-          </Typography>
-        </Stack>
-        <Typography variant="body1" sx={{ color: "rgba(240, 249, 255, 0.88)" }}>
-          A fortnightly digest on Bash、Zsh、Fishの最新潮流とUNIX的美学を凝縮。可観測性、ミニマリズム、
-          チームでの再現性を重視した設計ノートを受け取ってください。
-        </Typography>
-        <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
-          <TextField
-            type="email"
-            required
-            fullWidth
-            variant="outlined"
-            color="primary"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <MailOutlineIcon sx={{ color: "rgba(203, 213, 225, 0.85)" }} />
-                </InputAdornment>
-              ),
-            }}
-            placeholder="you@example.com"
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                backgroundColor: "rgba(2, 6, 23, 0.55)",
-                borderRadius: 16,
-              },
-            }}
-          />
-          <Button
-            variant="contained"
-            color="secondary"
-            size="large"
-            startIcon={<RssFeedIcon />}
-            sx={{ px: 4, alignSelf: { md: "stretch" } }}
-          >
-            Join the feed
+      <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+        <div class="max-w-2xl space-y-4">
+          <h2 class="text-3xl font-semibold text-foreground">軽く読める現場ダイジェスト</h2>
+          <p class="text-sm leading-relaxed text-foreground/75">
+            Bash・Zsh・Fishのアップデートを実践目線でまとめた二週間ごとの便りです。設定例、計測結果、チーム共有のコツをすべて日本語でお届けします。
+          </p>
+          <p class="text-xs text-muted-foreground">
+            追跡ピクセルなし。配信停止は<code class="rounded bg-secondary/70 px-1 py-0.5">curl -X DELETE</code>で完了します。
+          </p>
+        </div>
+        <form class="w-full max-w-sm space-y-3" onSubmit={handleSubmit}>
+          <label class="flex flex-col gap-2 text-sm font-medium text-foreground/80">
+            メールアドレス
+            <input
+              type="email"
+              required
+              value={email()}
+              onInput={(event) => setEmail(event.currentTarget.value)}
+              placeholder="you@example.com"
+              class="w-full rounded-full border border-border/70 bg-white/90 px-5 py-3 text-sm shadow-inner outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/40"
+            />
+          </label>
+          <Button type="submit" class="w-full justify-center text-sm font-semibold">
+            ダイジェストを受け取る
           </Button>
-        </Stack>
-        <Typography variant="caption" sx={{ color: "rgba(226, 232, 240, 0.85)" }}>
-          No trackers, just plaintext insights. Unsubscribe via one command: <code>curl -XDELETE</code>.
-        </Typography>
-      </Stack>
-    </Paper>
+        </form>
+      </div>
+    </section>
   )
 }
 

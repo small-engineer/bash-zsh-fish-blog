@@ -1,21 +1,17 @@
-import Box from "@suid/material/Box"
-import Container from "@suid/material/Container"
-import CssBaseline from "@suid/material/CssBaseline"
-import Grid from "@suid/material/Grid"
-import Stack from "@suid/material/Stack"
-import { ThemeProvider } from "@suid/material/styles"
-import NavigationBar from "./components/NavigationBar"
-import Hero from "./components/Hero"
-import SectionTitle from "./components/SectionTitle"
-import ArticleCard from "./components/ArticleCard"
-import ShellDeepDiveCard from "./components/ShellDeepDiveCard"
-import ReleaseRadarList from "./components/ReleaseRadarList"
-import ToolInsightCard from "./components/ToolInsightCard"
-import EditorialTrackCard from "./components/EditorialTrackCard"
-import NewsletterCard from "./components/NewsletterCard"
-import ScrollToTopButton from "./components/ScrollToTopButton"
-import Footer from "./components/Footer"
-import theme from "./theme"
+import { For } from 'solid-js'
+import type { Component } from 'solid-js'
+
+import NavigationBar from '~/components/NavigationBar'
+import Hero from '~/components/Hero'
+import SectionTitle from '~/components/SectionTitle'
+import ArticleCard from '~/components/ArticleCard'
+import ShellDeepDiveCard from '~/components/ShellDeepDiveCard'
+import ReleaseRadarList from '~/components/ReleaseRadarList'
+import ToolInsightCard from '~/components/ToolInsightCard'
+import EditorialTrackCard from '~/components/EditorialTrackCard'
+import NewsletterCard from '~/components/NewsletterCard'
+import ScrollToTopButton from '~/components/ScrollToTopButton'
+import Footer from '~/components/Footer'
 import {
   editorialTracks,
   featuredArticle,
@@ -23,117 +19,75 @@ import {
   releaseRadar,
   shellDeepDives,
   toolchainInsights,
-} from "./data/articles"
-import { For } from "solid-js"
-import type { Component } from "solid-js"
+} from '~/data/articles'
 
 const App: Component = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Box
-        sx={{
-          minHeight: "100vh",
-          backgroundColor: "#020617",
-          backgroundImage:
-            "radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 55%), radial-gradient(circle at 80% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 55%)",
-          pb: 10,
-        }}
-      >
-        <Container maxWidth="lg" sx={{ py: { xs: 4, md: 6 } }}>
-          <NavigationBar />
-          <Box sx={{ mt: { xs: 4, md: 6 } }}>
-            <Hero article={featuredArticle} />
-          </Box>
+    <main class="bg-background text-foreground">
+      <div class="mx-auto flex min-h-screen max-w-6xl flex-col gap-14 px-5 py-8 md:px-10 md:py-12">
+        <NavigationBar />
 
-          <Box sx={{ mt: { xs: 6, md: 8 } }}>
+        <Hero article={featuredArticle} />
+
+        <section class="space-y-6" id="latest">
+          <SectionTitle
+            title="最新フィールドレポート"
+            description="各シェルの変更点を現場導入の観点で検証し、コマンド一つずつ丁寧に解説します。"
+            actionLabel="過去の記録"
+            actionHref="#editorial"
+          />
+          <div class="section-grid">
+            <For each={latestArticles}>{(article) => <ArticleCard article={article} />}</For>
+          </div>
+        </section>
+
+        <section class="space-y-6" id="deep-dives">
+          <SectionTitle
+            title="深堀りテクニック"
+            description="UNIX的な小さな部品を組み合わせて、チームでも再現できるシンプルな仕組みを作ります。"
+            actionLabel="テーマの希望を送る"
+            actionHref="#newsletter"
+          />
+          <div class="grid gap-6 md:grid-cols-3">
+            <For each={shellDeepDives}>{(dive) => <ShellDeepDiveCard dive={dive} />}</For>
+          </div>
+        </section>
+
+        <section class="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+          <div class="space-y-6">
             <SectionTitle
-              id="latest"
-              title="Latest field reports"
-              description="Focused coverage on the freshest Bash、Zsh、Fish updates with an emphasis on measurable outcomes."
-              actionLabel="View archive"
-              actionHref="#editorial"
+              title="リリース速報"
+              description="主要ツールとシェル本体の更新情報を、互換性の観点と運用メモ付きで整理しました。"
             />
-            <Grid container spacing={3.5}>
-              <For each={latestArticles}>
-                {(article) => (
-                  <Grid item xs={12} md={6}>
-                    <ArticleCard article={article} />
-                  </Grid>
-                )}
-              </For>
-            </Grid>
-          </Box>
-
-          <Box sx={{ mt: { xs: 6, md: 8 } }}>
+            <ReleaseRadarList releases={releaseRadar} />
+          </div>
+          <div class="space-y-6">
             <SectionTitle
-              title="Shell deep dives"
-              description="Reverse-engineered playbooks for building modern shell experiences while staying true to UNIX minimalism."
-              actionLabel="Request a topic"
-              actionHref="#newsletter"
+              title="ツールチェーン洞察"
+              description="端末からダッシュボードまでを結ぶための最新実験と計測結果です。"
             />
-            <Grid container spacing={3}>
-              <For each={shellDeepDives}>
-                {(dive) => (
-                  <Grid item xs={12} md={4}>
-                    <ShellDeepDiveCard dive={dive} />
-                  </Grid>
-                )}
-              </For>
-            </Grid>
-          </Box>
+            <div class="flex flex-col gap-5">
+              <For each={toolchainInsights}>{(insight) => <ToolInsightCard insight={insight} />}</For>
+            </div>
+          </div>
+        </section>
 
-          <Grid container spacing={4} sx={{ mt: { xs: 6, md: 8 } }}>
-            <Grid item xs={12} md={7}>
-              <SectionTitle
-                id="release-radar"
-                title="Release radar"
-                description="Watch the steady drumbeat of shell-adjacent tooling, from GNU releases to indie prompt engines."
-                actionLabel="Submit a release"
-                actionHref="#newsletter"
-              />
-              <ReleaseRadarList releases={releaseRadar} />
-            </Grid>
-            <Grid item xs={12} md={5}>
-              <SectionTitle
-                title="Toolchain insights"
-                description="Experiments that wire Solid UI overlays into terminal-native workflows."
-                actionLabel="Propose a lab"
-                actionHref="#newsletter"
-              />
-              <Stack spacing={3}>
-                <For each={toolchainInsights}>
-                  {(insight) => <ToolInsightCard insight={insight} />}
-                </For>
-              </Stack>
-            </Grid>
-          </Grid>
+        <section class="space-y-6" id="editorial">
+          <SectionTitle
+            title="連載トラック"
+            description="継続シリーズで、ミニマルな土台に息の長い改善を積み重ねていくための実践集です。"
+          />
+          <div class="section-grid">
+            <For each={editorialTracks}>{(track) => <EditorialTrackCard track={track} />}</For>
+          </div>
+        </section>
 
-          <Box sx={{ mt: { xs: 6, md: 8 } }} id="editorial">
-            <SectionTitle
-              title="Editorial tracks"
-              description="Recurring series engineered with the UNIX mantra: simple pieces combined for powerful systems."
-            />
-            <Grid container spacing={3}>
-              <For each={editorialTracks}>
-                {(track) => (
-                  <Grid item xs={12} md={4}>
-                    <EditorialTrackCard track={track} />
-                  </Grid>
-                )}
-              </For>
-            </Grid>
-          </Box>
+        <NewsletterCard />
 
-          <Box sx={{ mt: { xs: 6, md: 8 } }}>
-            <NewsletterCard />
-          </Box>
-
-          <Footer />
-        </Container>
-        <ScrollToTopButton />
-      </Box>
-    </ThemeProvider>
+        <Footer />
+      </div>
+      <ScrollToTopButton />
+    </main>
   )
 }
 

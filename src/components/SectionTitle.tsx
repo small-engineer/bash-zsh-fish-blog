@@ -1,10 +1,7 @@
-import Box from "@suid/material/Box"
-import Button from "@suid/material/Button"
-import Stack from "@suid/material/Stack"
-import Typography from "@suid/material/Typography"
-import LaunchIcon from "@suid/icons-material/Launch"
-import { Show } from "solid-js"
-import type { Component } from "solid-js"
+import { Show } from 'solid-js'
+import type { Component } from 'solid-js'
+
+import { Button } from '~/components/ui/button'
 
 interface SectionTitleProps {
   id?: string
@@ -16,37 +13,29 @@ interface SectionTitleProps {
 
 const SectionTitle: Component<SectionTitleProps> = (props) => {
   return (
-    <Stack
+    <div
       id={props.id}
-      direction={{ xs: "column", md: "row" }}
-      spacing={2}
-      justifyContent="space-between"
-      sx={{ mb: 3, alignItems: { xs: "flex-start", md: "center" }, textAlign: { xs: "left", md: "initial" } }}
+      class="flex flex-col gap-3 pb-2 pt-1 md:flex-row md:items-center md:justify-between"
     >
-      <Box>
-        <Typography variant="h3" sx={{ fontWeight: 700, letterSpacing: "-0.02em" }}>
-          {props.title}
-        </Typography>
+      <div class="max-w-2xl space-y-1">
+        <h2 class="text-2xl font-semibold text-foreground md:text-3xl">{props.title}</h2>
         <Show when={props.description}>
-          {(description: () => string) => (
-            <Typography variant="body2" sx={{ color: "text.secondary", mt: 0.5 }}>
-              {description()}
-            </Typography>
+          {(description) => (
+            <p class="text-sm leading-relaxed text-muted-foreground">{description()}</p>
           )}
         </Show>
-      </Box>
+      </div>
       <Show when={props.actionLabel && props.actionHref}>
         <Button
-          variant="text"
-          endIcon={<LaunchIcon />}
-          color="secondary"
+          variant="link"
+          as="a"
           href={props.actionHref}
-          sx={{ fontWeight: 600 }}
+          class="text-sm font-semibold text-primary hover:text-primary/80"
         >
           {props.actionLabel}
         </Button>
       </Show>
-    </Stack>
+    </div>
   )
 }
 
